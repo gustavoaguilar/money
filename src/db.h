@@ -6,12 +6,15 @@
 #define DB_H
 struct Note;
 
-typedef struct Sentinel{
+typedef struct List{
   int size;
   struct Note *next;
-}Sentinel;
+}List;
 
-Sentinel* createList();
-void addNote(Sentinel* ref, int id, float value, char* info, char* date);
-void printList(Sentinel* ref);
+List* createList();
+void addNote(List* ref, int id, float value, char* info, char* date);
+void remNote(List* ref, int id);
+void printNote(List* ref, int id);
+void printList(List* ref);
+
 #endif
