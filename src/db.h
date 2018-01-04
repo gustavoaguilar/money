@@ -17,4 +17,7 @@ void remNote(List* ref, int id);
 void printNote(List* ref, int id);
 void printList(List* ref);
 
+void writeFile(List* ref, int nextId);
+List* readFile(char* path, int* id, float* currency);
+
 #endif

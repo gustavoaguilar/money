@@ -38,6 +38,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
 
   if(ref->next == NULL){
     ref->next = new;
+    new->prev = NULL;
     ref->size++;
     return;
   }
@@ -47,6 +48,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
     aux = aux->next;
   }
   aux->next = new;
+  new->prev = aux;
 }
 
 void remNote(List* ref, int id){
@@ -55,7 +57,6 @@ void remNote(List* ref, int id){
     printf("Empty List\n");
     return;
   }
-
   Note* aux = ref->next;
 
   //The first of the list
@@ -80,6 +81,7 @@ void remNote(List* ref, int id){
   if(aux->id == id){
     //The middle of the list
     if(aux->next != NULL){
+      printf("TESTEEE\n");
       aux->prev->next = aux->next;
       aux->next->prev = aux->prev;
       free(aux);
@@ -94,6 +96,10 @@ void remNote(List* ref, int id){
 
 void printNote(List* ref, int id){
   Note* aux = ref->next;
+  if(aux == NULL){
+    printf("List Empty\n");
+    return;
+  }
   while(aux->next != NULL && aux->id != id){
     aux = aux->next;
   }
@@ -112,8 +118,50 @@ void printList(List* ref){
     printf("List Empty\n");
   }
   while(aux != NULL){
-    printf("[%d]\t$%6.2f\t\"%30s\"\t(%s)\n", aux->id, aux->value, aux->info, aux->date);
+    printf("[%d]\t$%7.2f\t\"%30s\"\t(%s)\n", aux->id, aux->value, aux->info, aux->date);
     aux = aux->next;
   }
   printf("\n");
+}
+
+void writeFile(List* ref, int nextId){
+    FILE* file;
+    Note* aux;
+    file = fopen("data.txt","w+");
+    aux = ref->next;
+
+    if(aux == NULL){
+      return;
+    }
+    fprintf(file, "%d\n", nextId);
+    while(aux != NULL){
+      fprintf(file, "%d %.2f %s %s\n", aux->id, aux->value, aux->info, aux->date);
+      aux = aux->next;
+    }
+    fprintf(file, "-1");
+    fclose(file);
+}
+
+List* readFile(char* path, int* nextId, float* currency){
+  FILE* file;
+  List* l;
+  int id;
+  float value;
+  char info[MAXINFO];
+  char date[DATESIZE];
+  file = fopen(path,"r");
+  l = createList();
+
+  fscanf(file, "%d", nextId);
+
+  fscanf(file, "%d", &id);
+  while(id != -1){
+    fscanf(file,"%f %s %s\n", &value, info, date);
+    //printf("%d %f %s %s\n", id, value, info, date);
+    addNote(l, id, value, info, date);
+    (*currency)+=value;
+    fscanf(file, "%d", &id);
+  }
+  fclose(file);
+  return l;
 }
