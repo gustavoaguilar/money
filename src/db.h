@@ -4,8 +4,10 @@
 
 #ifndef DB_H
 #define DB_H
+/*
+  Linked List and basics functions
+*/
 struct Note;
-
 typedef struct List{
   int size;
   struct Note *next;
@@ -19,6 +21,6 @@ void printList(List* ref);
 float calCurrency(List* ref);
 
 void writeFile(List* ref, int nextId);
-List* readFile(char* path, int* id, float* currency);
+List* readFile(char* path, int* id);
 
 #endif

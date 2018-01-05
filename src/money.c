@@ -9,7 +9,6 @@
 int strComp(char str1[], char str2[]){
   int i=0, j=0;
   while(str1[i] != '\x0' && str2[j] != '\x0'){
-    //printf("<%c %c> ",str1[i], str2[j]);
 
     if(str1[i] != str2[j]) return 1;
     i++;
@@ -37,7 +36,8 @@ int main(){
   int running = 1;
 
   char usrInput[MAX_USR_INPUT];
-  List* bd = readFile("data.txt", &nextId, &currency);
+  List* bd = readFile("data.txt", &nextId);
+  currency = calCurrency(bd);
   printf("NEXT: %d\n", nextId);
 
   printf("Wellcome to Money! v0.1\n\nCREATED BY: Gustavo Henrique Aguilar\n\nType \"help\" to list the commands\n");
@@ -45,8 +45,6 @@ int main(){
   while(running){
     printf("<money> ");
     getUsrString(usrInput);
-    //printf("INPUT... %s\n", usrInput);
-    //printf("%d\n", strComp(usrInput, "quit"));
     if(!strComp(usrInput, "help")){
       printf("\nList of commands:\n");
       printf("add      (Create a new Note)\n");
@@ -67,9 +65,10 @@ int main(){
 
       printf("Date(dd/mm/yyyy, leave blank for automatic): ");
       getUsrString(date);
-      //get date from system;
+      //if the date is blank
       if(!strComp(date, "")){
         char buffer[4];
+        //get date from system;
         time_t t = time(NULL);
         struct tm tm = *localtime(&t);
         if(tm.tm_mday < 10) strcat(date, "0");

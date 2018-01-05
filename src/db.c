@@ -2,12 +2,14 @@
 #include<stdlib.h>
 #include<string.h>
 #include"db.h"
-
+/*
+  Data Structure for the list
+*/
 typedef struct Note{
   int id;
   float value;
   char info[MAXINFO];
-  char date[DATESIZE]; // dd/mm/yy
+  char date[DATESIZE]; // dd/mm/yyyy
 
   struct Note *next;
   struct Note *prev;
@@ -36,6 +38,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
   strcpy(new->info, info);
   strcpy(new->date, date);
 
+  //First of the list
   if(ref->next == NULL){
     ref->next = new;
     new->prev = NULL;
@@ -43,7 +46,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
     printf("Added!\n");
     return;
   }
-
+  //Last of the list
   Note *aux = ref->next;
   while(aux->next != NULL){
     aux = aux->next;
@@ -160,14 +163,14 @@ void writeFile(List* ref, int nextId){
     fclose(file);
 }
 
-List* readFile(char* path, int* nextId, float* currency){
+List* readFile(char* path, int* nextId){
   FILE* file;
   List* l;
   int id;
   float value;
   char info[MAXINFO];
   char date[DATESIZE];
-  file = fopen(path,"r");
+  file = fopen(path, "r");
   l = createList();
 
   fscanf(file, "%d", nextId);
@@ -175,9 +178,7 @@ List* readFile(char* path, int* nextId, float* currency){
   fscanf(file, "%d", &id);
   while(id != -1){
     fscanf(file,"%f %s %s\n", &value, info, date);
-    //printf("%d %f %s %s\n", id, value, info, date);
     addNote(l, id, value, info, date);
-    (*currency)+=value;
     fscanf(file, "%d", &id);
   }
   fclose(file);
