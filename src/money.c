@@ -37,10 +37,10 @@ int main(){
 
   char usrInput[MAX_USR_INPUT];
   List* bd = readFile("data.txt", &nextId);
-  currency = calCurrency(bd);
-  printf("NEXT: %d\n", nextId);
+  if(bd->next != NULL)
+    currency = calCurrency(bd);
 
-  printf("Wellcome to Money! v0.1\n\nCREATED BY: Gustavo Henrique Aguilar\n\nType \"help\" to list the commands\n");
+  printf("Wellcome to Money! v1.0\n\nCREATED BY: Gustavo Henrique Aguilar\n\nType \"help\" to list the commands\n");
 
   while(running){
     printf("<money> ");
@@ -86,6 +86,7 @@ int main(){
       }
 
       addNote(bd, nextId, value, info, date);
+      printf("Added!\n");
       nextId++;
       currency = calCurrency(bd);
     }

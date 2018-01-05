@@ -43,7 +43,6 @@ void addNote(List* ref, int id, float value, char* info, char* date){
     ref->next = new;
     new->prev = NULL;
     ref->size++;
-    printf("Added!\n");
     return;
   }
   //Last of the list
@@ -54,7 +53,6 @@ void addNote(List* ref, int id, float value, char* info, char* date){
   aux->next = new;
   new->prev = aux;
   ref->size++;
-  printf("Added!\n");
 }
 
 void remNote(List* ref, int id){
