@@ -26,6 +26,7 @@ void getUsrString(char input[]){
   fgets(input, MAX_USR_INPUT, stdin);
   int i;
   for(i=0; input[i] != '\x0'; i++){
+    if(input[i] == ' ') input[i] = '_';
     if(input[i] == '\n') input[i] = '\x0';
   }
 }
@@ -61,7 +62,7 @@ int main(){
       scanf("%f", &value);
       c = getchar();
 
-      printf("Info(Max 50 characters, use '_' for spaces): ");
+      printf("Info(Max 50 characters): ");
       getUsrString(info);
 
       printf("Date(dd/mm/yyyy, leave blank for automatic): ");
@@ -87,6 +88,7 @@ int main(){
 
       addNote(bd, nextId, value, info, date);
       nextId++;
+      currency = calCurrency(bd);
     }
     else if(!strComp(usrInput, "rem")){
       int id;
@@ -95,9 +97,10 @@ int main(){
       scanf("%d", &id);
       c = getchar();
       remNote(bd, id);
+      currency = calCurrency(bd);
     }
     else if(!strComp(usrInput, "currency")){
-      printf("\n\nYou currency is: $%.2f\n\n", currency);
+      printf("\nYou currency is: $%.2f\n\n", currency);
     }
     else if(!strComp(usrInput, "list")){
       printList(bd);

@@ -40,6 +40,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
     ref->next = new;
     new->prev = NULL;
     ref->size++;
+    printf("Added!\n");
     return;
   }
 
@@ -49,6 +50,8 @@ void addNote(List* ref, int id, float value, char* info, char* date){
   }
   aux->next = new;
   new->prev = aux;
+  ref->size++;
+  printf("Added!\n");
 }
 
 void remNote(List* ref, int id){
@@ -65,10 +68,12 @@ void remNote(List* ref, int id){
       ref->next = aux->next;
       aux->next->prev = NULL;
       free(aux);
+      printf("Removed\n");
       return;
     }else{
       ref->next = NULL;
       free(aux);
+      printf("Removed\n");
       return;
     }
   }
@@ -81,7 +86,6 @@ void remNote(List* ref, int id){
   if(aux->id == id){
     //The middle of the list
     if(aux->next != NULL){
-      printf("TESTEEE\n");
       aux->prev->next = aux->next;
       aux->next->prev = aux->prev;
       free(aux);
@@ -89,6 +93,7 @@ void remNote(List* ref, int id){
       aux->prev->next = NULL;
       free(aux);
     }
+    printf("Removed\n");
     return;
   }
   printf("Not found\n");
@@ -122,6 +127,19 @@ void printList(List* ref){
     aux = aux->next;
   }
   printf("\n");
+}
+
+float calCurrency(List* ref){
+  float currency=0;
+  Note *aux = ref->next;
+  if(aux == NULL){
+    printf("List Empty\n");
+  }
+  while(aux != NULL){
+    currency += aux->value;
+    aux = aux->next;
+  }
+  return currency;
 }
 
 void writeFile(List* ref, int nextId){
