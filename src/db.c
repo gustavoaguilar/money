@@ -42,6 +42,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
   if(ref->next == NULL){
     ref->next = new;
     new->prev = NULL;
+    new->next = NULL;
     ref->size++;
     return;
   }
@@ -52,6 +53,7 @@ void addNote(List* ref, int id, float value, char* info, char* date){
   }
   aux->next = new;
   new->prev = aux;
+  new->next = NULL;
   ref->size++;
 }
 
@@ -149,10 +151,12 @@ void writeFile(List* ref, int nextId){
     file = fopen("data.txt","w+");
     aux = ref->next;
 
+    //If the list is empty
+    fprintf(file, "%d\n", nextId);
     if(aux == NULL){
+      fprintf(file, "-1");
       return;
     }
-    fprintf(file, "%d\n", nextId);
     while(aux != NULL){
       fprintf(file, "%d %.2f %s %s\n", aux->id, aux->value, aux->info, aux->date);
       aux = aux->next;

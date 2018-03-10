@@ -23,6 +23,8 @@ int strComp(char str1[], char str2[]){
 
 void getUsrString(char input[]){
   fgets(input, MAX_USR_INPUT, stdin);
+  __fpurge(stdin);
+  //fflush(stdin); FOR WINDOWS
   int i;
   for(i=0; input[i] != '\x0'; i++){
     if(input[i] == ' ') input[i] = '_';
@@ -55,19 +57,18 @@ int main(){
     }
     else if(!strComp(usrInput, "add")){
       float value;
-      char info[MAXINFO], date[MAXINFO], c;
+      char info[MAXINFO], date[DATESIZE], c;
       printf("Value: ");
       scanf("%f", &value);
       c = getchar();
 
       printf("Info(Max 50 characters): ");
       getUsrString(info);
-
       printf("Date(dd/mm/yyyy, leave blank for automatic): ");
       getUsrString(date);
       //if the date is blank
       if(!strComp(date, "")){
-        char buffer[4];
+        char buffer[5];
         //get date from system;
         time_t t = time(NULL);
         struct tm tm = *localtime(&t);
